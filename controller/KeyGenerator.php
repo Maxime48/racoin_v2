@@ -8,9 +8,9 @@ class KeyGenerator
 {
     private $apiKey;
 
-    public function __construct(ApiKey $apiKey)
+    public function __construct()
     {
-        $this->apiKey = $apiKey;
+        $this->apiKey = new ApiKey();
     }
 
     function show($twig, $menu, $chemin, $cat)

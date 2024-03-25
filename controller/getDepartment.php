@@ -7,7 +7,7 @@ use model\Departement;
 class getDepartment
 {
 
-    protected $departments = array();
+    protected array $departments = array();
 
     public function getAllDepartments()
     {

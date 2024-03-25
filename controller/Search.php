@@ -34,37 +34,26 @@ class Search
 
     private function performSearch($array)
     {
-        $motclef = trim($array['motclef'] ?? '');
-        $codepostal = trim($array['codepostal'] ?? '');
-        $categorie = $array['categorie'] ?? "Toutes catégories";
-        $prixMin = $array['prix-min'] ?? "Min";
-        $prixMax = $array['prix-max'] ?? "Max";
-
         $query = Annonce::select();
 
-        if ($motclef !== "") {
-            $query->where('description', 'like', '%' . $motclef . '%');
+        if (!empty(trim($array['motclef'] ?? ''))) {
+            $query->where('description', 'like', '%' . $array['motclef'] . '%');
         }
 
-        if ($codepostal !== "") {
-            $query->where('ville', '=', $codepostal);
+        if (!empty(trim($array['codepostal'] ?? ''))) {
+            $query->where('ville', '=', $array['codepostal']);
         }
 
-        if ($categorie !== "Toutes catégories" && $categorie !== "-----") {
-            $categ = Categorie::select('id_categorie')->where('id_categorie', '=', $categorie)->first()->id_categorie;
-            $query->where('id_categorie', '=', $categ);
+        if (($array['categorie'] ?? "Toutes catégories") !== "Toutes catégories" && $array['categorie'] !== "-----") {
+            $query->where('id_categorie', '=', $array['categorie']);
         }
 
-        if ($prixMin !== "Min" && $prixMax !== "Max") {
-            if ($prixMax !== "nolimit") {
-                $query->whereBetween('prix', array($prixMin, $prixMax));
-            } else {
-                $query->where('prix', '>=', $prixMin);
-            }
-        } elseif ($prixMax !== "Max" && $prixMax !== "nolimit") {
-            $query->where('prix', '<=', $prixMax);
-        } elseif ($prixMin !== "Min") {
-            $query->where('prix', '>=', $prixMin);
+        if (($array['prix-min'] ?? "Min") !== "Min") {
+            $query->where('prix', '>=', $array['prix-min']);
+        }
+
+        if (($array['prix-max'] ?? "Max") !== "Max" && $array['prix-max'] !== "nolimit") {
+            $query->where('prix', '<=', $array['prix-max']);
         }
 
         return $query->get();

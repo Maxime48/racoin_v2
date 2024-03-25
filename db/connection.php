@@ -4,11 +4,12 @@ namespace db;
 
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Events\Dispatcher;
-use Illuminate\Container\Container;
 
-class connection {
+class connection
+{
 
-    public static function createConn() {
+    public static function createConn()
+    {
         $capsule = new DB;
         $capsule->addConnection(parse_ini_file(__DIR__ . '/../config/config.ini'));
         $capsule->setAsGlobal();
